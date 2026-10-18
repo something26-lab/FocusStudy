@@ -20,7 +20,7 @@ File APK Beta của FocusStudy hiện đã có sẵn!
 
 Tải file APK trong mục Releases của repository và cài đặt trên thiết bị Android.
 <blockquote>
-  <strong>Note:</strong> Lưu ý: Đây là phiên bản beta. Ứng dụng có thể gặp lỗi hoặc những vấn đề ngoài dự kiến.
+  <strong>Lưu ý:</strong>Đây là phiên bản beta. Ứng dụng có thể gặp lỗi hoặc những vấn đề ngoài dự kiến.
 </blockquote>
 🚧 Trạng thái dự án
 
