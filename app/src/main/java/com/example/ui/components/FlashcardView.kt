@@ -42,6 +42,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.data.model.Flashcard
 
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.border
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
+import com.example.ui.components.glass.LiquidGlassBorderGradient
+import com.example.ui.components.glass.LiquidGlassFillGradient
+import com.example.ui.components.glass.LiquidGlassInnerGlowGradient
+import com.example.ui.components.glass.LiquidGlassSubtleFill
+import com.example.ui.theme.LocalIsLiquidGlass
+
 @Composable
 fun FlashcardView(
     card: Flashcard,
@@ -55,6 +65,7 @@ fun FlashcardView(
         animationSpec = tween(durationMillis = 400),
         label = "cardFlip"
     )
+    val isGlass = LocalIsLiquidGlass.current
 
     Column(
         modifier = modifier.fillMaxWidth(),
@@ -76,32 +87,8 @@ fun FlashcardView(
             }
         }
 
-        // Flipping Card Container
-        Card(
-            shape = RoundedCornerShape(24.dp),
-            elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(340.dp)
-                .graphicsLayer {
-                    rotationY = rotation
-                    cameraDistance = 12f * density
-                }
-                .clickable(
-                    interactionSource = remember { MutableInteractionSource() },
-                    indication = null
-                ) {
-                    onFlip()
-                }
-                .testTag("flashcard_flip_card"),
-            colors = CardDefaults.cardColors(
-                containerColor = if (rotation <= 90f) {
-                    MaterialTheme.colorScheme.surface
-                } else {
-                    MaterialTheme.colorScheme.surfaceVariant
-                }
-            )
-        ) {
+        // Card Content lambda
+        val cardContent = @Composable {
             Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -207,6 +194,75 @@ fun FlashcardView(
                         )
                     }
                 }
+            }
+        }
+
+        val shape = RoundedCornerShape(24.dp)
+        if (isGlass) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(340.dp)
+                    .graphicsLayer {
+                        rotationY = rotation
+                        cameraDistance = 12f * density
+                    }
+                    .shadow(
+                        elevation = 10.dp,
+                        shape = shape,
+                        spotColor = Color(0x7000E5FF),
+                        ambientColor = Color(0x35000000)
+                    )
+                    .clip(shape)
+                    .background(if (rotation <= 90f) LiquidGlassFillGradient else LiquidGlassSubtleFill)
+                    .border(
+                        BorderStroke(1.2.dp, LiquidGlassBorderGradient),
+                        shape = shape
+                    )
+                    .clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = null
+                    ) {
+                        onFlip()
+                    }
+                    .testTag("flashcard_flip_card")
+            ) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(3.dp)
+                        .background(LiquidGlassInnerGlowGradient)
+                        .align(Alignment.TopCenter)
+                )
+                cardContent()
+            }
+        } else {
+            Card(
+                shape = shape,
+                elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(340.dp)
+                    .graphicsLayer {
+                        rotationY = rotation
+                        cameraDistance = 12f * density
+                    }
+                    .clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = null
+                    ) {
+                        onFlip()
+                    }
+                    .testTag("flashcard_flip_card"),
+                colors = CardDefaults.cardColors(
+                    containerColor = if (rotation <= 90f) {
+                        MaterialTheme.colorScheme.surface
+                    } else {
+                        MaterialTheme.colorScheme.surfaceVariant
+                    }
+                )
+            ) {
+                cardContent()
             }
         }
 

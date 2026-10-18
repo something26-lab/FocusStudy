@@ -27,8 +27,18 @@ import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.foundation.clickable
 import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.LightMode
+import androidx.compose.material.icons.filled.WaterDrop
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.foundation.border
 import com.example.ui.theme.ThemeMode
-import androidx.compose.material.icons.filled.Timer
+import android.app.Activity
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.material.icons.filled.CardGiftcard
+import androidx.compose.material.icons.filled.Stars
+import com.example.ads.AdManager
+import com.example.ui.components.glass.LiquidGlassCard
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -133,14 +143,13 @@ fun TimerScreen(
 
         Spacer(modifier = Modifier.height(14.dp))
 
-        // Hero Decorative Study Banner
-        Card(
-            shape = RoundedCornerShape(20.dp),
+        // Hero Decorative Study Banner with Liquid Glass border
+        LiquidGlassCard(
+            shape = RoundedCornerShape(22.dp),
             modifier = Modifier
                 .fillMaxWidth()
-                .height(115.dp)
-                .testTag("study_hero_banner"),
-            elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+                .height(115.dp),
+            testTag = "study_hero_banner"
         ) {
             Box(modifier = Modifier.fillMaxSize()) {
                 Image(
@@ -184,13 +193,20 @@ fun TimerScreen(
         val themeMode by viewModel.themeMode.collectAsState()
         Surface(
             shape = RoundedCornerShape(12.dp),
-            color = if (themeMode == ThemeMode.DARK) {
-                MaterialTheme.colorScheme.surfaceVariant
-            } else {
-                MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.6f)
+            color = when (themeMode) {
+                ThemeMode.LIQUID_GLASS -> Color(0x3538BDF8)
+                ThemeMode.DARK -> MaterialTheme.colorScheme.surfaceVariant
+                else -> MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.6f)
             },
             modifier = Modifier
                 .fillMaxWidth()
+                .then(
+                    if (themeMode == ThemeMode.LIQUID_GLASS) Modifier.border(
+                        1.dp,
+                        Brush.linearGradient(listOf(Color(0x80FFFFFF), Color(0x3038BDF8))),
+                        RoundedCornerShape(12.dp)
+                    ) else Modifier
+                )
                 .clickable { viewModel.cycleThemeMode() }
                 .testTag("eye_comfort_pill")
         ) {
@@ -204,14 +220,23 @@ fun TimerScreen(
                     modifier = Modifier.weight(1f)
                 ) {
                     Icon(
-                        imageVector = if (themeMode == ThemeMode.DARK) Icons.Default.DarkMode else Icons.Default.LightMode,
+                        imageVector = when (themeMode) {
+                            ThemeMode.LIQUID_GLASS -> Icons.Default.WaterDrop
+                            ThemeMode.DARK -> Icons.Default.DarkMode
+                            else -> Icons.Default.LightMode
+                        },
                         contentDescription = null,
-                        tint = if (themeMode == ThemeMode.DARK) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.primary,
+                        tint = when (themeMode) {
+                            ThemeMode.LIQUID_GLASS -> Color(0xFF38BDF8)
+                            ThemeMode.DARK -> MaterialTheme.colorScheme.secondary
+                            else -> MaterialTheme.colorScheme.primary
+                        },
                         modifier = Modifier.size(16.dp)
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         text = when (themeMode) {
+                            ThemeMode.LIQUID_GLASS -> "Phong cách Kính Lỏng (Liquid Glass): Gương mờ & hào quang đa sắc"
                             ThemeMode.DARK -> "Chế độ đêm: Giảm chói mắt & tông màu ấm dịu"
                             ThemeMode.LIGHT -> "Chế độ ngày: Tương phản rõ nét ban ngày"
                             ThemeMode.SYSTEM -> "Tự động: Thay đổi theo lịch hệ thống"
@@ -383,16 +408,96 @@ fun TimerScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        // Google Ads Rewarded Ad - Focus Booster Card
+        val context = LocalContext.current
+        var rewardedMessage by remember { mutableStateOf<String?>(null) }
+
+        LiquidGlassCard(
+            shape = RoundedCornerShape(20.dp),
+            modifier = Modifier
+                .fillMaxWidth(),
+            testTag = "rewarded_ad_booster_card"
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Column(modifier = Modifier.weight(1f)) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Icon(
+                            imageVector = Icons.Default.Stars,
+                            contentDescription = "Thưởng tập trung",
+                            tint = Color(0xFF38BDF8),
+                            modifier = Modifier.size(20.dp)
+                        )
+                        Spacer(modifier = Modifier.width(6.dp))
+                        Text(
+                            text = "Tăng Tốc Tập Trung (Ads)",
+                            style = MaterialTheme.typography.titleSmall,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
+                        text = rewardedMessage ?: "Xem video ngắn nhận ngay +10 phút tập trung thưởng & huy hiệu",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+
+                Spacer(modifier = Modifier.width(12.dp))
+
+                Button(
+                    onClick = {
+                        val activity = context as? Activity
+                        if (activity != null) {
+                            if (AdManager.isRewardedAdReady()) {
+                                AdManager.showRewarded(
+                                    activity = activity,
+                                    onRewardEarned = { amount, _ ->
+                                        val bonus = if (amount > 0) amount else 10
+                                        rewardedMessage = "🎉 Đã nhận thưởng +$bonus phút tập trung!"
+                                        viewModel.addBonusFocusMinutes(bonus)
+                                    }
+                                )
+                            } else {
+                                rewardedMessage = "🎉 Đã kích hoạt +10 phút tập trung thưởng!"
+                                viewModel.addBonusFocusMinutes(10)
+                                AdManager.loadRewarded(activity)
+                            }
+                        }
+                    },
+                    shape = RoundedCornerShape(12.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.primary
+                    ),
+                    modifier = Modifier.testTag("watch_rewarded_ad_btn")
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.CardGiftcard,
+                        contentDescription = null,
+                        modifier = Modifier.size(16.dp)
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text("Nhận")
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
         // Motivational Focus Quote Card
-        Card(
-            shape = RoundedCornerShape(16.dp),
-            colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
-            ),
-            modifier = Modifier.fillMaxWidth()
+        LiquidGlassCard(
+            shape = RoundedCornerShape(20.dp),
+            modifier = Modifier.fillMaxWidth(),
+            testTag = "motivational_quote_card"
         ) {
             Column(
-                modifier = Modifier.padding(14.dp),
+                modifier = Modifier.padding(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(

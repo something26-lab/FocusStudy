@@ -1,6 +1,7 @@
 package com.example.ui.components
 
 import androidx.compose.animation.AnimatedVisibility
+import com.example.ui.components.glass.LiquidGlassCard
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -68,15 +69,11 @@ fun GreetingIntroCard(
         else -> "Buổi học đêm yên tĩnh. Bật chế độ đêm dịu mắt và âm thanh thư giãn để tiếp thu sâu hơn."
     }
 
-    ElevatedCard(
+    LiquidGlassCard(
         shape = RoundedCornerShape(22.dp),
-        colors = CardDefaults.elevatedCardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant
-        ),
-        elevation = CardDefaults.elevatedCardElevation(defaultElevation = 2.dp),
         modifier = modifier
-            .fillMaxWidth()
-            .testTag("greeting_intro_card")
+            .fillMaxWidth(),
+        testTag = "greeting_intro_card"
     ) {
         Column(
             modifier = Modifier

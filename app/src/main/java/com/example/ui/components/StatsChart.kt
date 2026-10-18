@@ -33,6 +33,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.data.model.StudySession
+import com.example.ui.components.glass.AppGlassCard
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -72,19 +73,13 @@ fun WeeklyFocusChart(
     val primaryColor = MaterialTheme.colorScheme.primary
     val barInactive = MaterialTheme.colorScheme.surfaceVariant
 
-    Card(
+    AppGlassCard(
         modifier = modifier
             .fillMaxWidth()
             .testTag("weekly_focus_chart"),
         shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface
-        ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        contentPadding = androidx.compose.foundation.layout.PaddingValues(18.dp)
     ) {
-        Column(
-            modifier = Modifier.padding(18.dp)
-        ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -146,7 +141,6 @@ fun WeeklyFocusChart(
             }
         }
     }
-}
 
 @Composable
 fun SubjectDistributionCard(
@@ -159,19 +153,13 @@ fun SubjectDistributionCard(
         .toList()
         .sortedByDescending { it.second }
 
-    Card(
+    AppGlassCard(
         modifier = modifier
             .fillMaxWidth()
             .testTag("subject_dist_card"),
         shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface
-        ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        contentPadding = androidx.compose.foundation.layout.PaddingValues(18.dp)
     ) {
-        Column(
-            modifier = Modifier.padding(18.dp)
-        ) {
             Text(
                 text = "Phân Bổ Theo Môn Học",
                 style = MaterialTheme.typography.titleMedium,
@@ -222,4 +210,3 @@ fun SubjectDistributionCard(
             }
         }
     }
-}

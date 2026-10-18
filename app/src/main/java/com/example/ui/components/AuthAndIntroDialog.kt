@@ -49,6 +49,8 @@ import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import com.example.ui.components.glass.LiquidGlassBorderGradient
+import com.example.ui.theme.LocalIsLiquidGlass
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -107,14 +109,22 @@ fun AuthAndIntroDialog(
         onDismissRequest = onDismiss,
         properties = DialogProperties(usePlatformDefaultWidth = false)
     ) {
+        val isGlass = LocalIsLiquidGlass.current
         Surface(
             shape = RoundedCornerShape(24.dp),
-            color = MaterialTheme.colorScheme.surface,
-            tonalElevation = 6.dp,
+            color = if (isGlass) androidx.compose.ui.graphics.Color(0xF20F172A) else MaterialTheme.colorScheme.surface,
+            tonalElevation = if (isGlass) 0.dp else 6.dp,
             modifier = Modifier
                 .fillMaxWidth(0.94f)
                 .padding(vertical = 24.dp)
                 .testTag("auth_and_intro_dialog")
+                .then(
+                    if (isGlass) Modifier.border(
+                        1.2.dp,
+                        LiquidGlassBorderGradient,
+                        RoundedCornerShape(24.dp)
+                    ) else Modifier
+                )
         ) {
             Column(
                 modifier = Modifier

@@ -92,8 +92,8 @@ class StudyViewModel(application: Application) : AndroidViewModel(application) {
     val notes: StateFlow<List<StudyNote>> = repository.allNotes
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
-    // Theme Mode (System, Day Light, Late-Night Dark)
-    private val _themeMode = MutableStateFlow(ThemeMode.SYSTEM)
+    // Theme Mode (Liquid Glass default, Day Light, Late-Night Dark)
+    private val _themeMode = MutableStateFlow(ThemeMode.LIQUID_GLASS)
     val themeMode: StateFlow<ThemeMode> = _themeMode.asStateFlow()
 
     fun setThemeMode(mode: ThemeMode) {
@@ -102,7 +102,8 @@ class StudyViewModel(application: Application) : AndroidViewModel(application) {
 
     fun cycleThemeMode() {
         _themeMode.value = when (_themeMode.value) {
-            ThemeMode.SYSTEM -> ThemeMode.DARK
+            ThemeMode.SYSTEM -> ThemeMode.LIQUID_GLASS
+            ThemeMode.LIQUID_GLASS -> ThemeMode.DARK
             ThemeMode.DARK -> ThemeMode.LIGHT
             ThemeMode.LIGHT -> ThemeMode.SYSTEM
         }
@@ -315,6 +316,22 @@ class StudyViewModel(application: Application) : AndroidViewModel(application) {
                 durationMinutes = durationMinutes,
                 type = current.mode.sessionType,
                 note = "Completed ${current.mode.title}"
+            )
+        }
+    }
+
+    fun addBonusFocusMinutes(bonusMinutes: Int) {
+        val current = _timerState.value
+        _timerState.value = current.copy(
+            remainingSeconds = current.remainingSeconds + (bonusMinutes * 60),
+            totalSeconds = current.totalSeconds + (bonusMinutes * 60)
+        )
+        viewModelScope.launch {
+            repository.logSession(
+                subjectName = current.currentSubject,
+                durationMinutes = bonusMinutes,
+                type = com.example.data.model.SessionType.POMODORO,
+                note = "Nhận thưởng Google Ads Focus Booster"
             )
         }
     }

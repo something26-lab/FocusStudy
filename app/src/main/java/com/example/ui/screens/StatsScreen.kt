@@ -46,6 +46,7 @@ import androidx.compose.ui.unit.sp
 import com.example.data.model.StudySession
 import com.example.ui.components.SubjectDistributionCard
 import com.example.ui.components.WeeklyFocusChart
+import com.example.ui.components.glass.AppGlassCard
 import com.example.viewmodel.StudyViewModel
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -200,17 +201,12 @@ fun MetricTile(
     iconTint: Color,
     modifier: Modifier = Modifier
 ) {
-    ElevatedCard(
+    AppGlassCard(
         modifier = modifier,
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.elevatedCardColors(
-            containerColor = MaterialTheme.colorScheme.surface
-        )
+        contentPadding = androidx.compose.foundation.layout.PaddingValues(12.dp)
     ) {
-        Column(
-            modifier = Modifier.padding(12.dp)
-        ) {
-            Icon(
+        Icon(
                 imageVector = icon,
                 contentDescription = null,
                 tint = iconTint,
@@ -230,7 +226,6 @@ fun MetricTile(
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
-        }
     }
 }
 
@@ -242,17 +237,13 @@ fun AchievementRow(
     isUnlocked: Boolean,
     color: Color
 ) {
-    ElevatedCard(
+    AppGlassCard(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(14.dp),
-        colors = CardDefaults.elevatedCardColors(
-            containerColor = if (isUnlocked) MaterialTheme.colorScheme.surface else MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
-        )
+        contentPadding = androidx.compose.foundation.layout.PaddingValues(14.dp)
     ) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(14.dp),
+            modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Box(

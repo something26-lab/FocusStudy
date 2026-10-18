@@ -15,6 +15,7 @@ FocusStudy is a learning platform designed to help students study smarter, stay 
 * 🎯 Focus Mode — Stay focused on your goals.
 * 🤖 AI-Powered Learning — Discover smarter ways to learn.
 * 📈 Productivity — Build better study habits.
+* 🎁 Google Ads Rewards — Earn Focus Boosters & bonus study time with Rewarded Ads.
 
 📥 Download
 

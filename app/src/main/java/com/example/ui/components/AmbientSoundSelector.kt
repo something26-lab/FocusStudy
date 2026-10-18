@@ -32,6 +32,8 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.example.audio.AmbientSoundType
 
+import com.example.ui.components.glass.AppGlassCard
+
 @Composable
 fun AmbientSoundSelector(
     selectedSound: AmbientSoundType,
@@ -39,14 +41,12 @@ fun AmbientSoundSelector(
     isPlaying: Boolean,
     modifier: Modifier = Modifier
 ) {
-    ElevatedCard(
+    AppGlassCard(
         modifier = modifier
-            .fillMaxWidth()
-            .testTag("ambient_sound_card")
+            .fillMaxWidth(),
+        testTag = "ambient_sound_card",
+        contentPadding = androidx.compose.foundation.layout.PaddingValues(14.dp)
     ) {
-        Column(
-            modifier = Modifier.padding(14.dp)
-        ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -106,4 +106,3 @@ fun AmbientSoundSelector(
             }
         }
     }
-}

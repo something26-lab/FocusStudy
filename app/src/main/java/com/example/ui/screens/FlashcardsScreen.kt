@@ -37,9 +37,13 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import android.app.Activity
+import androidx.compose.ui.platform.LocalContext
+import com.example.ads.AdManager
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.ui.graphics.Color
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -56,6 +60,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.data.model.FlashcardDeck
 import com.example.ui.components.FlashcardView
+import com.example.ui.components.glass.AppGlassCard
+import com.example.ui.components.glass.LiquidGlassFab
 import com.example.viewmodel.StudyViewModel
 
 @Composable
@@ -144,20 +150,15 @@ fun FlashcardsScreen(
 
             if (studyState.isFinished) {
                 // Completed Session Result
-                Card(
+                AppGlassCard(
                     shape = RoundedCornerShape(24.dp),
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.surface
-                    ),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 20.dp)
+                        .padding(vertical = 20.dp),
+                    contentPadding = androidx.compose.foundation.layout.PaddingValues(28.dp)
                 ) {
                     Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(28.dp),
+                        modifier = Modifier.fillMaxWidth(),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Icon(
@@ -181,8 +182,18 @@ fun FlashcardsScreen(
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                         Spacer(modifier = Modifier.height(24.dp))
+                        val context = LocalContext.current
                         Button(
-                            onClick = { viewModel.exitDeckStudy() },
+                            onClick = {
+                                val activity = context as? Activity
+                                if (activity != null) {
+                                    AdManager.showInterstitial(activity) {
+                                        viewModel.exitDeckStudy()
+                                    }
+                                } else {
+                                    viewModel.exitDeckStudy()
+                                }
+                            },
                             modifier = Modifier.fillMaxWidth().testTag("finish_review_btn")
                         ) {
                             Text("Quay Lại Danh Sách")
@@ -237,18 +248,13 @@ fun FlashcardsScreen(
                 }
 
                 items(decks) { deck ->
-                    ElevatedCard(
+                    AppGlassCard(
                         modifier = Modifier
                             .fillMaxWidth()
                             .testTag("deck_item_${deck.id}"),
                         shape = RoundedCornerShape(20.dp),
-                        colors = CardDefaults.elevatedCardColors(
-                            containerColor = MaterialTheme.colorScheme.surface
-                        )
+                        contentPadding = androidx.compose.foundation.layout.PaddingValues(18.dp)
                     ) {
-                        Column(
-                            modifier = Modifier.padding(18.dp)
-                        ) {
                             Row(
                                 modifier = Modifier.fillMaxWidth(),
                                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -324,7 +330,6 @@ fun FlashcardsScreen(
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Text("Học Bộ Thẻ Này")
                             }
-                        }
                     }
                 }
 
@@ -334,18 +339,17 @@ fun FlashcardsScreen(
             }
 
             // Floating Action Button to Add Deck
-            FloatingActionButton(
+            LiquidGlassFab(
                 onClick = { showAddDeckDialog = true },
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
                     .padding(20.dp)
-                    .testTag("fab_add_deck"),
-                containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = MaterialTheme.colorScheme.onPrimary
+                    .testTag("fab_add_deck")
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
-                    contentDescription = "Tạo bộ thẻ"
+                    contentDescription = "Tạo bộ thẻ",
+                    tint = Color.White
                 )
             }
         }

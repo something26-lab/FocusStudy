@@ -8,13 +8,53 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.platform.LocalContext
 
 enum class ThemeMode {
     SYSTEM,
     LIGHT,
-    DARK
+    DARK,
+    LIQUID_GLASS
 }
+
+val LiquidGlassColorScheme = darkColorScheme(
+    primary = GlassPrimary,
+    onPrimary = GlassOnPrimary,
+    primaryContainer = GlassPrimaryContainer,
+    onPrimaryContainer = GlassOnPrimaryContainer,
+    secondary = GlassSecondary,
+    onSecondary = GlassOnSecondary,
+    secondaryContainer = GlassSecondaryContainer,
+    onSecondaryContainer = GlassOnSecondaryContainer,
+    tertiary = GlassTertiary,
+    onTertiary = GlassOnTertiary,
+    tertiaryContainer = GlassTertiaryContainer,
+    onTertiaryContainer = GlassOnTertiaryContainer,
+    background = GlassBackground,
+    onBackground = GlassOnBackground,
+    surface = GlassSurface,
+    onSurface = GlassOnSurface,
+    surfaceVariant = GlassSurfaceVariant,
+    onSurfaceVariant = GlassOnSurfaceVariant,
+    outline = GlassOutline,
+    outlineVariant = GlassOutlineVariant,
+    inverseSurface = GlassInverseSurface,
+    inverseOnSurface = GlassInverseOnSurface,
+    inversePrimary = GlassInversePrimary,
+    error = GlassError,
+    onError = GlassOnError,
+    errorContainer = GlassErrorContainer,
+    onErrorContainer = GlassOnErrorContainer,
+    surfaceDim = GlassSurfaceDim,
+    surfaceBright = GlassSurfaceBright,
+    surfaceContainerLowest = GlassSurfaceContainerLowest,
+    surfaceContainerLow = GlassSurfaceContainerLow,
+    surfaceContainer = GlassSurfaceContainer,
+    surfaceContainerHigh = GlassSurfaceContainerHigh,
+    surfaceContainerHighest = GlassSurfaceContainerHighest
+)
 
 val LateNightDarkColorScheme = darkColorScheme(
     primary = NightPrimary,
@@ -90,9 +130,11 @@ val DayFocusLightColorScheme = lightColorScheme(
     surfaceContainerHighest = LightSurfaceContainerHighest
 )
 
+val LocalIsLiquidGlass = compositionLocalOf { true }
+
 @Composable
 fun FocusStudyTheme(
-    themeMode: ThemeMode = ThemeMode.SYSTEM,
+    themeMode: ThemeMode = ThemeMode.LIQUID_GLASS,
     darkTheme: Boolean = isSystemInDarkTheme(),
     dynamicColor: Boolean = false,
     content: @Composable () -> Unit
@@ -101,22 +143,34 @@ fun FocusStudyTheme(
         ThemeMode.SYSTEM -> darkTheme
         ThemeMode.LIGHT -> false
         ThemeMode.DARK -> true
+        ThemeMode.LIQUID_GLASS -> true
     }
 
     val colorScheme = when {
+        themeMode == ThemeMode.LIQUID_GLASS -> LiquidGlassColorScheme
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
             val context = LocalContext.current
-            if (useDark) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+            val isDarkDynamic = when (themeMode) {
+                ThemeMode.SYSTEM -> darkTheme
+                ThemeMode.LIGHT -> false
+                ThemeMode.DARK -> true
+                ThemeMode.LIQUID_GLASS -> true
+            }
+            if (isDarkDynamic) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
-        useDark -> LateNightDarkColorScheme
+        themeMode == ThemeMode.DARK -> LateNightDarkColorScheme
+        themeMode == ThemeMode.LIGHT -> DayFocusLightColorScheme
+        darkTheme -> LateNightDarkColorScheme
         else -> DayFocusLightColorScheme
     }
 
-    MaterialTheme(
-        colorScheme = colorScheme,
-        typography = Typography,
-        content = content
-    )
+    CompositionLocalProvider(LocalIsLiquidGlass provides (themeMode == ThemeMode.LIQUID_GLASS)) {
+        MaterialTheme(
+            colorScheme = colorScheme,
+            typography = Typography,
+            content = content
+        )
+    }
 }
 
 // Retain alias for backward compatibility

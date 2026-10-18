@@ -140,3 +140,48 @@ val SubjectPurple = Color(0xFF8B5CF6)
 val SubjectRose = Color(0xFFF43F5E)
 val SubjectOrange = Color(0xFFF97316)
 val SubjectCyan = Color(0xFF06B6D4)
+
+// ==========================================
+// Liquid Glass Scheme (Translucent Glassmorphism)
+// Ethereal frost, chromatic refraction, luminous rim
+// ==========================================
+val GlassPrimary = Color(0xFF38BDF8)               // Luminous cyan-sky
+val GlassOnPrimary = Color(0xFF031628)
+val GlassPrimaryContainer = Color(0x3338BDF8)      // Frosted cyan tint
+val GlassOnPrimaryContainer = Color(0xFFBAE6FD)
+
+val GlassSecondary = Color(0xFFA78BFA)             // Ethereal violet-purple
+val GlassOnSecondary = Color(0xFF2E1065)
+val GlassSecondaryContainer = Color(0x33A78BFA)    // Frosted purple tint
+val GlassOnSecondaryContainer = Color(0xFFDDD6FE)
+
+val GlassTertiary = Color(0xFF34D399)              // Bioluminescent emerald
+val GlassOnTertiary = Color(0xFF022C22)
+val GlassTertiaryContainer = Color(0x3334D399)
+val GlassOnTertiaryContainer = Color(0xFFA7F3D0)
+
+val GlassBackground = Color(0xFF0A0F1D)            // Deep cosmic canvas
+val GlassOnBackground = Color(0xFFF8FAFC)
+val GlassSurface = Color(0x551E293B)               // Translucent frosted glass (33% alpha)
+val GlassOnSurface = Color(0xFFF8FAFC)
+val GlassSurfaceVariant = Color(0x40334155)        // Secondary frosted tint
+val GlassOnSurfaceVariant = Color(0xFFCBD5E1)
+
+val GlassOutline = Color(0x4DF1F5F9)               // Specular edge highlight (30% white)
+val GlassOutlineVariant = Color(0x2694A3B8)        // Soft specular reflection (15% white)
+val GlassInverseSurface = Color(0xFFF8FAFC)
+val GlassInverseOnSurface = Color(0xFF090D1A)
+val GlassInversePrimary = Color(0xFF0284C7)
+
+val GlassError = Color(0xFFFB7185)                 // Fluorescent coral
+val GlassOnError = Color(0xFF4C0519)
+val GlassErrorContainer = Color(0x33FB7185)
+val GlassOnErrorContainer = Color(0xFFFFE4E6)
+
+val GlassSurfaceDim = Color(0xFF070B14)
+val GlassSurfaceBright = Color(0x6629354F)
+val GlassSurfaceContainerLowest = Color(0x220A0F1D)
+val GlassSurfaceContainerLow = Color(0x3310182B)
+val GlassSurfaceContainer = Color(0x44162035)
+val GlassSurfaceContainerHigh = Color(0x551D2A45)
+val GlassSurfaceContainerHighest = Color(0x66243455)

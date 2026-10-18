@@ -55,6 +55,8 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.data.model.Priority
+import com.example.ui.components.glass.AppGlassCard
+import com.example.ui.components.glass.LiquidGlassFab
 import com.example.viewmodel.StudyViewModel
 
 @Composable
@@ -105,15 +107,12 @@ fun PlannerScreen(
 
             // Progress Summary Card
             item {
-                Card(
+                AppGlassCard(
                     modifier = Modifier.fillMaxWidth().testTag("planner_progress_card"),
                     shape = RoundedCornerShape(20.dp),
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.primaryContainer
-                    )
+                    contentPadding = androidx.compose.foundation.layout.PaddingValues(18.dp)
                 ) {
-                    Column(modifier = Modifier.padding(18.dp)) {
-                        Row(
+                    Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.CenterVertically
@@ -143,7 +142,6 @@ fun PlannerScreen(
                             color = MaterialTheme.colorScheme.primary,
                             trackColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.5f)
                         )
-                    }
                 }
             }
 
@@ -183,23 +181,15 @@ fun PlannerScreen(
 
             // Task Items
             items(filteredTasks, key = { it.id }) { task ->
-                ElevatedCard(
+                AppGlassCard(
                     modifier = Modifier
                         .fillMaxWidth()
                         .testTag("task_item_${task.id}"),
                     shape = RoundedCornerShape(16.dp),
-                    colors = CardDefaults.elevatedCardColors(
-                        containerColor = if (task.isCompleted) {
-                            MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.6f)
-                        } else {
-                            MaterialTheme.colorScheme.surface
-                        }
-                    )
+                    contentPadding = androidx.compose.foundation.layout.PaddingValues(14.dp)
                 ) {
                     Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(14.dp),
+                        modifier = Modifier.fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         IconButton(
@@ -307,18 +297,17 @@ fun PlannerScreen(
         }
 
         // Add Task Floating Action Button
-        FloatingActionButton(
+        LiquidGlassFab(
             onClick = { showAddTaskDialog = true },
             modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .padding(20.dp)
-                .testTag("fab_add_task"),
-            containerColor = MaterialTheme.colorScheme.primary,
-            contentColor = MaterialTheme.colorScheme.onPrimary
+                .testTag("fab_add_task")
         ) {
             Icon(
                 imageVector = Icons.Default.Add,
-                contentDescription = "Thêm nhiệm vụ"
+                contentDescription = "Thêm nhiệm vụ",
+                tint = Color.White
             )
         }
     }

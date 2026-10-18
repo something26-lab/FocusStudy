@@ -50,6 +50,8 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.ui.components.glass.AppGlassCard
+import com.example.ui.components.glass.LiquidGlassFab
 import com.example.viewmodel.StudyViewModel
 
 @Composable
@@ -143,15 +145,13 @@ fun CheatsheetScreen(
             // Notes List
             if (notes.isEmpty()) {
                 item {
-                    Card(
+                    AppGlassCard(
                         modifier = Modifier.fillMaxWidth().padding(top = 20.dp),
                         shape = RoundedCornerShape(16.dp),
-                        colors = CardDefaults.cardColors(
-                            containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
-                        )
+                        contentPadding = androidx.compose.foundation.layout.PaddingValues(24.dp)
                     ) {
                         Column(
-                            modifier = Modifier.padding(24.dp),
+                            modifier = Modifier.fillMaxWidth(),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             Text(
@@ -164,19 +164,14 @@ fun CheatsheetScreen(
                 }
             } else {
                 items(notes, key = { it.id }) { note ->
-                    ElevatedCard(
+                    AppGlassCard(
                         modifier = Modifier
                             .fillMaxWidth()
                             .testTag("note_item_${note.id}"),
                         shape = RoundedCornerShape(18.dp),
-                        colors = CardDefaults.elevatedCardColors(
-                            containerColor = MaterialTheme.colorScheme.surface
-                        )
+                        contentPadding = androidx.compose.foundation.layout.PaddingValues(16.dp)
                     ) {
-                        Column(
-                            modifier = Modifier.padding(16.dp)
-                        ) {
-                            Row(
+                        Row(
                                 modifier = Modifier.fillMaxWidth(),
                                 horizontalArrangement = Arrangement.SpaceBetween,
                                 verticalAlignment = Alignment.CenterVertically
@@ -261,7 +256,6 @@ fun CheatsheetScreen(
                                     modifier = Modifier.padding(12.dp)
                                 )
                             }
-                        }
                     }
                 }
             }
@@ -272,18 +266,17 @@ fun CheatsheetScreen(
         }
 
         // Add Note Floating Action Button
-        FloatingActionButton(
+        LiquidGlassFab(
             onClick = { showAddNoteDialog = true },
             modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .padding(20.dp)
-                .testTag("fab_add_note"),
-            containerColor = MaterialTheme.colorScheme.primary,
-            contentColor = MaterialTheme.colorScheme.onPrimary
+                .testTag("fab_add_note")
         ) {
             Icon(
                 imageVector = Icons.Default.Add,
-                contentDescription = "Thêm ghi chú sổ tay"
+                contentDescription = "Thêm ghi chú sổ tay",
+                tint = androidx.compose.ui.graphics.Color.White
             )
         }
     }

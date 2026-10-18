@@ -94,6 +94,34 @@ fun CircularTimerDisplay(
                 (size.height - diameter) / 2f
             )
 
+            // Frosted Liquid Glass Lens inside the timer orb
+            drawCircle(
+                brush = Brush.radialGradient(
+                    colors = listOf(
+                        Color(0x35FFFFFF),
+                        Color(0x1238BDF8),
+                        Color(0x05000000)
+                    ),
+                    center = center,
+                    radius = diameter / 2f
+                ),
+                radius = (diameter / 2f) - (strokeWidth / 2f)
+            )
+
+            // Specular Glass Rim
+            drawCircle(
+                brush = Brush.linearGradient(
+                    colors = listOf(
+                        Color(0x80FFFFFF),
+                        Color(0x2038BDF8),
+                        Color(0x05FFFFFF),
+                        Color(0x40A78BFA)
+                    )
+                ),
+                radius = (diameter / 2f) - (strokeWidth / 2f),
+                style = Stroke(width = 1.5.dp.toPx())
+            )
+
             // Background Track
             drawArc(
                 color = trackColor,
