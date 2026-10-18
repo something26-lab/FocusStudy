@@ -4,7 +4,7 @@ Learn smarter. Focus better. Achieve more.
 
 <p align="center">
   <a href="./README.md">🇺🇸 English</a> ·
-  <a href="./README_Vi.md">🇻🇳 Tiếng Việt</a>
+  <a href="./Readme_Vi.md">🇻🇳 Tiếng Việt</a>
 </p>
 
 FocusStudy is a learning platform designed to help students study smarter, stay focused, and improve productivity.
